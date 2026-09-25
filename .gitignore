@@ -1,0 +1,21 @@
+# Large source-data directories are archived on Zenodo, not GitHub.
+**/data/
+
+# Generated outputs and MATLAB temporary files.
+**/output/
+*.asv
+*.autosave
+*.m~
+
+# Operating-system and editor files.
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.tmp
+
+# MATLAB cache and generated artifacts.
+slprj/
+codegen/
+*.mex*
+*.p

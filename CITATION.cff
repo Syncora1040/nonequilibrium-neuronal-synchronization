@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "Code for nonequilibrium neuronal synchronization analysis"
+type: software
+authors:
+  - family-names: Xu
+    given-names: Jiacheng
+    orcid: "https://orcid.org/0009-0002-8258-5147"
+  - family-names: Wang
+    given-names: Jin
+repository-code: "https://github.com/Syncora1040/nonequilibrium-neuronal-synchronization"
+license: MIT
+version: 1.0.0
+date-released: 2026-09-25
+keywords:
+  - neuronal synchronization
+  - nonequilibrium dynamics
+  - landscape and flux
+  - theta neurons
+  - MATLAB
