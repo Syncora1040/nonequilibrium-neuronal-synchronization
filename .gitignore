@@ -1,5 +1,5 @@
-# Large source-data directories are archived on Zenodo, not GitHub.
-**/data/
+# The oversized original is replaced by two Git LFS parts.
+Figure_3/data/trajectory/R_time_gIE=0.15517.mat
 
 # Generated outputs and MATLAB temporary files.
 **/output/

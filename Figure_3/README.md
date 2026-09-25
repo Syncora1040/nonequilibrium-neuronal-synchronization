@@ -39,10 +39,16 @@ the final manuscript layout is provided as `reference/Fig3_published.png`.
 
 | File | MATLAB variable(s) | Purpose |
 |---|---|---|
-| `data/trajectory/R_time_gIE=0.15517.mat` | `Zss` | Complex steady trajectories used to construct all three coordinate-space plots |
+| `data/trajectory/R_time_gIE=0.15517.mat.part01` and `.part02` | `Zss` after automatic reconstruction | Two byte-for-byte parts of the complex steady-trajectory MAT file used to construct all three coordinate-space plots |
 | `data/trajectory/PCA_basis_gIE=0.15517.mat` | `landscape_pca.coeff`, `landscape_pca.mu` | PCA transformation basis |
 
-The trajectory file is a MATLAB 7.3 file and is approximately 2.33 GB.
+The original trajectory file is a MATLAB 7.3 file of approximately 2.17 GiB,
+which exceeds GitHub's per-file limits. It is distributed as two binary parts.
+Keep both parts in `data/trajectory/`; `PLOT_Figure_3_ABC.m` automatically
+reconstructs an exact temporary MAT file, loads `Zss`, and removes the temporary
+file after use. If the unsplit `R_time_gIE=0.15517.mat` is present, the script
+uses it directly. Reconstruction requires approximately 2.17 GiB of temporary
+free disk space.
 
 ### Panel D
 

@@ -15,9 +15,8 @@ dominant transition paths.
 Each figure directory is self-contained:
 
 - `code/` contains the main MATLAB plotting script and required helper code.
-- `data/` contains processed source data read directly by the script. These
-  large files are excluded from GitHub and will be archived separately on
-  Zenodo.
+- `data/` contains processed source data read directly by the script. Large
+  MATLAB files are stored with Git Large File Storage (Git LFS).
 - `output/` is the destination for regenerated figures.
 - `reference/` contains the corresponding manuscript figure for comparison.
 
@@ -73,22 +72,22 @@ directory.
 
 ## Reproducing a figure
 
-1. Download the source-data archive from Zenodo once the DOI is available.
-2. Place each downloaded `data/` directory in its matching figure directory.
-3. Start MATLAB and change the current directory to the relevant `code/`
+1. Install Git LFS, then clone this repository normally. Run `git lfs pull` if
+   the source-data files were not downloaded automatically.
+2. Start MATLAB and change the current directory to the relevant `code/`
    directory.
-4. Run the plotting program listed in the figure index or in that directory's
+3. Run the plotting program listed in the figure index or in that directory's
    README.
-5. Compare the generated files in `output/` with the files in `reference/`.
+4. Compare the generated files in `output/` with the files in `reference/`.
 
 ## Data availability
 
-The complete processed source data are approximately 3.38 GB and include files
-larger than GitHub's 100 MB per-file limit. They are therefore not tracked in
-this repository. The permanent Zenodo DOI will be added here before manuscript
-submission.
-
-**Zenodo DOI:** forthcoming
+The complete processed source data are approximately 3.38 GB. They are tracked
+with Git LFS because several files exceed GitHub's regular 100 MB per-file
+limit. The largest MATLAB file is provided as two binary parts, and the Figure
+3 script reconstructs it automatically in a temporary directory. The two parts
+reconstruct a file with SHA-256 checksum
+`BFEBE7406A3E3CA0E4A6F20C9D7E33F9FF70092DF6FA25EFA9795B2AF65C5208`.
 
 ## Citation
 

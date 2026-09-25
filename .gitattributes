@@ -1,0 +1,4 @@
+# Store MATLAB source data in Git Large File Storage.
+*.mat filter=lfs diff=lfs merge=lfs -text
+*.mat.part01 filter=lfs diff=lfs merge=lfs -text
+*.mat.part02 filter=lfs diff=lfs merge=lfs -text

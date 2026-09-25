@@ -61,9 +61,7 @@ for ig = 1:numel(gIEList)
         spaceData{iSpace, ig} = cell(0, 1);
     end
     rawFile = fullfile(dataDir, sprintf('R_time_gIE=%.5f.mat', gIE));
-    if ~exist(rawFile, 'file')
-        error('Steady trajectory file not found:\n  %s', rawFile);
-    end
+    [rawFile, rawCleanup] = materialize_split_mat_file(rawFile);
 
     fprintf('gIE = %.5f\n  loading %s\n', gIE, rawFile);
     S = load(rawFile, 'Zss');
@@ -126,7 +124,7 @@ for ig = 1:numel(gIEList)
         spaceData{3, ig}{end+1, 1} = struct( ...
             'xy', [cosE, cosI], 'state', stateLabel); %#ok<SAGROW>
     end
-    clear S P;
+    clear S P rawCleanup;
 end
 
 spaceSpecs = struct( ...
@@ -150,3 +148,55 @@ for iSpace = 1:numel(spaceSpecs)
     fprintf('  %s\n', outFile);
 end
 fprintf('===== done =====\n');
+
+function [matFile, cleanupObj] = materialize_split_mat_file(matFile)
+% Use the original MAT file when present. Otherwise, reconstruct it from the
+% two byte-for-byte release parts in a temporary directory. The temporary
+% file is deleted automatically when cleanupObj is cleared.
+cleanupObj = [];
+if exist(matFile, 'file')
+    return;
+end
+
+parts = {[matFile, '.part01'], [matFile, '.part02']};
+missing = parts(~cellfun(@(f) exist(f, 'file') == 2, parts));
+if ~isempty(missing)
+    error(['Steady trajectory file not found. Provide either:\n  %s\n' ...
+        'or both release parts:\n  %s\n  %s'], matFile, parts{1}, parts{2});
+end
+
+temporaryFile = [tempname, '.mat'];
+outId = fopen(temporaryFile, 'Wb');
+if outId < 0
+    error('Could not create temporary MAT file:\n  %s', temporaryFile);
+end
+closeOutput = onCleanup(@() fclose(outId));
+
+bufferBytes = 64 * 1024 * 1024;
+for iPart = 1:numel(parts)
+    inId = fopen(parts{iPart}, 'rb');
+    if inId < 0
+        error('Could not open release part:\n  %s', parts{iPart});
+    end
+    closeInput = onCleanup(@() fclose(inId));
+    while true
+        bytes = fread(inId, bufferBytes, '*uint8');
+        if isempty(bytes), break; end
+        count = fwrite(outId, bytes, 'uint8');
+        if count ~= numel(bytes)
+            error('Incomplete write while reconstructing:\n  %s', temporaryFile);
+        end
+    end
+    clear closeInput;
+end
+clear closeOutput;
+
+matFile = temporaryFile;
+cleanupObj = onCleanup(@() delete_if_present(temporaryFile));
+end
+
+function delete_if_present(fileName)
+if exist(fileName, 'file')
+    delete(fileName);
+end
+end
